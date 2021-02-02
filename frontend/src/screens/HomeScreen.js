@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row,Button, Col } from 'react-bootstrap'
+import { Row, Button, Col } from 'react-bootstrap'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listProducts,createProduct } from '../actions/productActions'
-import { PRODUCT_CREATE_RESET,PRODUCT_DETAILS_RESET } from '../constants/productConstants'
+import { listProducts, createProduct } from '../actions/productActions'
+import {
+  PRODUCT_CREATE_RESET,
+} from '../constants/productConstants'
 
-const HomeScreen = ({history}) => {
+const HomeScreen = ({ history, match }) => {
+  const keyword = match.params.keyword
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
@@ -16,7 +19,7 @@ const HomeScreen = ({history}) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-    const productCreate = useSelector((state) => state.productCreate)
+  const productCreate = useSelector((state) => state.productCreate)
   const {
     loading: loadingCreate,
     error: errorCreate,
@@ -25,14 +28,13 @@ const HomeScreen = ({history}) => {
   } = productCreate
 
   useEffect(() => {
-    
     dispatch({ type: PRODUCT_CREATE_RESET })
     if (successCreate) {
       history.push(`/productt/${createdProduct._id}/edit`)
     } else {
-      dispatch(listProducts())
+      dispatch(listProducts(keyword))
     }
-  }, [history,dispatch,successCreate,createdProduct])
+  }, [history, dispatch, successCreate, createdProduct, keyword])
   const createProductHandler = () => {
     dispatch(createProduct())
   }
@@ -40,15 +42,14 @@ const HomeScreen = ({history}) => {
     <>
       {userInfo ? (
         <>
-        
           <h1>Latest Products</h1>
           {loadingCreate && <Loader />}
-      {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+          {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
           <Col className='text-right'>
-          <Button className='my-3' onClick={createProductHandler}>
-            <i className='fas fa-plus'></i> Create Product
-          </Button>
-        </Col>
+            <Button className='my-3' onClick={createProductHandler}>
+              <i className='fas fa-plus'></i> Create Product
+            </Button>
+          </Col>
           {loading ? (
             <Loader />
           ) : error ? (

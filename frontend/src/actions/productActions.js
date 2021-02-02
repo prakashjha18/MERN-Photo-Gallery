@@ -18,7 +18,7 @@ import {
   USER_DETAILS_REQUEST
 } from '../constants/userConstants'
 
-export const listProducts = () => async (dispatch,getState) => {
+export const listProducts = (keyword = '') => async (dispatch,getState) => {
   try {
     dispatch({
       type: USER_DETAILS_REQUEST,
@@ -36,7 +36,7 @@ export const listProducts = () => async (dispatch,getState) => {
     
 
     const { data } = await axios.get(
-      '/api/products',
+      `/api/products?keyword=${keyword}`,
       config
     )
 
