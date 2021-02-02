@@ -20,9 +20,6 @@ import {
 
 export const listProducts = (keyword = '') => async (dispatch,getState) => {
   try {
-    dispatch({
-      type: USER_DETAILS_REQUEST,
-    })
     const { userLogin: { userInfo} } = getState()
     const config = {
       headers: {
@@ -57,9 +54,6 @@ export const listProducts = (keyword = '') => async (dispatch,getState) => {
 
 export const listProductDetails = (id) => async (dispatch,getState) => {
   try {
-    dispatch({
-      type: USER_DETAILS_REQUEST,
-    })
     const { userLogin: { userInfo} } = getState()
     const config = {
       headers: {
